@@ -79,4 +79,53 @@ def topMatches(prefs,person,n=5,similarity=sim_pearson):
     scores.sort()
     scores.reverse()
     return scores[0:n]
-    
+
+# Gets recommendations for a person by using a weighted average
+# of every other users rankings
+def getRecommendations(prefs,person,similarity=sim_pearson):
+    totals={}
+    simSums={}
+    for others in prefs:
+            #dont compare me to myself
+            if others==person : continue
+            sim=similarity(prefs,person,others)
+
+            #ignore scores of zero or lower
+            if sim<0 : continue
+            for item in prefs[others]:
+                    # only score movies That I have not seen
+                    if item not in prefs[person] or prefs[person][item]==0:
+                            #similarity * score
+                            totals.setdefault(item,0)
+                            totals[item]+=prefs[others][item]*sim
+                            #Sum of similarities
+                            simSums.setdefault(item,0)
+                            simSums[item]+=sim
+
+    #create the normalized list
+    rankings=[(total/simSums[item],item)for item,total in totals.items()]
+
+    # return the sorted list
+    rankings.sort()
+    rankings.reverse()
+    return rankings
+
+# suggesting item item similarity
+def transformPrefs(prefs):
+    result={}
+    for person in prefs:
+        for item in prefs[person]:
+            result.setdefault(item,{})
+
+            #Flip item and person
+            result[item][person]=prefs[person][item]
+
+    return result
+
+#display critics properly
+def showPrefs(prefs):
+    for name in prefs:
+        print (name)
+        for ratings in prefs[name]:
+            print (ratings, ':' , prefs[name][ratings])
+    return 0
