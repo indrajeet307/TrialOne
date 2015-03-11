@@ -91,7 +91,7 @@ def getRecommendations(prefs,person,similarity=sim_pearson):
             sim=similarity(prefs,person,others)
 
             #ignore scores of zero or lower
-            if sim<0 : continue
+            if sim<=0 : continue
             for item in prefs[others]:
                     # only score movies That I have not seen
                     if item not in prefs[person] or prefs[person][item]==0:
@@ -126,6 +126,6 @@ def transformPrefs(prefs):
 def showPrefs(prefs):
     for name in prefs:
         print (name)
-        for ratings in prefs[name]:
-            print (ratings, ':' , prefs[name][ratings])
+        for item in prefs[name]:
+            print (item, ':' , prefs[name][item])
     return 0
