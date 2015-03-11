@@ -1,4 +1,5 @@
 # A dictionary of movie critics and their ratings of a small
+# A blank line
 # set of movies
 critics={'Lisa Rose': {'Lady in the Water': 2.5, 'Snakes on a Plane': 3.5,
  'Just My Luck': 3.0, 'Superman Returns': 3.5, 'You, Me and Dupree': 2.5,
